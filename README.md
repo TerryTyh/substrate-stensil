@@ -39,31 +39,44 @@ cargo build --release
 ./target/release/substrate-stencil --dev
 ```
 
-## Run public testnet
+## 生成chain_spec
+  ```sh
+  ./target/release/substrate-stencil build-spec --chain staging > stencil-staging.json
+  ```
+## 编译chain_spec
+  ```sh
+  ./target/release/substrate-stencil build-spec --chain=stencil-staging.json --raw > stencil-staging-raw.json
+  ```
+## 创建node_key
+  ```sh
+  ./target/release/substrate-stencil key generate-node-key
+  ```
+<img width="763" alt="image" src="https://github.com/TerryTyh/substrate-stensil/assets/120092281/1fe0ad1c-c9cb-4f02-8932-7d65fcc2a40b">
 
-* Modify the genesis config in chain_spec.rs
-* Build spec, `./target/release/substrate-stencil build-spec --chain staging > stencil-staging.json`
-* Change original spec to encoded raw spec, `./target/release/substrate-stencil build-spec --chain=stencil-staging.json --raw > stencil-staging-raw.json`
-* Start your bootnodes, node key can be generate with command `./target/release/substrate-stencil key generate-node-key`.
-  ```shell
+## 启动bootnodes
+  ```sh
   ./target/release/substrate-stencil \
-       --node-key <your-node-key> \
+       --node-key d51308ed26068c08a37bcf6b828146839cc0e6504e3771426c585c1dfb8e8521 \
        --base-path /tmp/bootnode1 \
        --chain stencil-staging-raw.json \
        --name bootnode1
   ```
-* Start your initial validators,
+  <img width="871" alt="image" src="https://github.com/TerryTyh/substrate-stensil/assets/120092281/2cd99a4b-613f-4ef4-9b91-f5090236f6c3">
+   
+## 启动validators
   ```shell
   ./target/release/substrate-stencil \
       --base-path  /tmp/validator1 \
       --chain   stencil-staging-raw.json \
-      --bootnodes  /ip4/<your-bootnode-ip>/tcp/30333/p2p/<your-bootnode-peerid> \
-	    --port 30336 \
-	    --ws-port 9947 \
-	    --rpc-port 9936 \
+      --bootnodes  /ip4/192.168.110.86/tcp/30333/p2p/12D3KooWD5VWTpY2euzJvRLbRDtp2WeiCe7JkTDKxMqPnmU8LRGo \
+        --port 30336 \
+        --ws-port 9947 \
+        --rpc-port 9936 \
       --name  validator1 \
       --validator
   ```
+<img width="822" alt="image" src="https://github.com/TerryTyh/substrate-stensil/assets/120092281/44c127fb-c7b7-4364-88df-9b79e24a67a3">
+
 * [Insert session keys](https://substrate.dev/docs/en/tutorials/start-a-private-network/customchain#add-keys-to-keystore)
 * Attract enough validators from community in waiting
 * Call force_new_era in staking pallet with sudo, rotate to PoS validators
