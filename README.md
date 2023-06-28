@@ -63,7 +63,7 @@ cargo build --release
   ```
   <img width="871" alt="image" src="https://github.com/TerryTyh/substrate-stensil/assets/120092281/2cd99a4b-613f-4ef4-9b91-f5090236f6c3">
    
-## 启动validators
+## 启动验证节点validators
   ```shell
   ./target/release/substrate-stencil \
       --base-path  /tmp/validator1 \
@@ -77,9 +77,25 @@ cargo build --release
   ```
 <img width="822" alt="image" src="https://github.com/TerryTyh/substrate-stensil/assets/120092281/44c127fb-c7b7-4364-88df-9b79e24a67a3">
 
-* [Insert session keys](https://substrate.dev/docs/en/tutorials/start-a-private-network/customchain#add-keys-to-keystore)
+## 验证人节点启动后，在该验证节点添加用户Babe和Grandpa所使用的Key
+  ```shell
+// Babe使用的key
+./target/release/substrate-stencil key insert --base-path /tmp/node01 \
+  --chain stencil-staging-raw.json \
+  --scheme sr25519 \
+  --suri 0x861c6d95051f942bb022f13fc2125b2974933d8ab1441bfdee9855e9d8051556\
+  --key-type babe
+// GRANDPA使用的key
+./target/release/substrate-stencil key insert --base-path /tmp/node01 \
+  --chain stencil-staging-raw.json \
+  --scheme ed25519 \
+  --suri 0xac8fdba5bbe008f65d0e85181daa5443c2eb492fea729a5981b2161467f8655c\
+  --key-type gran
+  ```
+<img width="612" alt="image" src="https://github.com/TerryTyh/substrate-stensil/assets/120092281/293bca4c-8991-46c5-b0d2-66d41e250195">
+
+## Then
 * Attract enough validators from community in waiting
 * Call force_new_era in staking pallet with sudo, rotate to PoS validators
 * Enable governance, and remove sudo
 * Enable transfer and other functions
-# substrate-stensil
